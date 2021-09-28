@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>JohannesAR</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body style="text-align: center">
+
+    <div class="fullscreen">
+      <video class="input_video"></video>
+      <canvas id="unity-canvas" style="background: #231F20"></canvas>
+    </div>
+    <div style="display: none;">
+      <button id= "start" onclick="startMediaPipeRecord()">RECORD</button>
+      <button id = "stop" style="visibility: hidden;" onclick="stopMediaPipeRecord()">STOP</button>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
