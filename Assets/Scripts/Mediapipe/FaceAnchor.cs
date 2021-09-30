@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MediaPipe {
   public class FaceAnchor : MonoBehaviour {
 
-    public Constants.Anchor anchor;
+    public FaceMesh.Anchor anchor;
     public bool lookRotation = false;
     public Vector3 offset;
 

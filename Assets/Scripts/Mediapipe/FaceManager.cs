@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace MediaPipe {
   public class FaceManager : MonoBehaviour {
-    public static FaceData face;
+    public static FaceMeshData face;
 
     private void Start() {
-      MediaPipeBridge.Instance.onPointDeserialized += SaveFaceData;
+      //MediaPipeBridge.Instance.onPointDeserialized += SaveFaceData;
     }
 
-    void SaveFaceData(FaceData face) {
+    void SaveFaceData(FaceMeshData face) {
       FaceManager.face = face;
     }
   }

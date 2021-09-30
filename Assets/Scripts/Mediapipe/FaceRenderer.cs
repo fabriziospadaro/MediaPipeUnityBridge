@@ -8,12 +8,12 @@ public class FaceRenderer : MonoBehaviour{
   public Vector3[] ovalPoints;
   MeshFilter meshFilter;
   public Mesh mesh;
-  public FaceData face;
+  public FaceMeshData face;
 
   void Start(){
     meshFilter = GetComponent<MeshFilter>();
     mesh = meshFilter.mesh;
-    ovalPoints = new Vector3[Constants.OVAL_INDICES.Length];
+    ovalPoints = new Vector3[FaceMesh.OVAL_INDICES.Length];
     mesh.triangles = mesh.triangles.Reverse().ToArray();
   }
 

@@ -6,11 +6,11 @@ namespace MediaPipe {
 
     private void OnDrawGizmos() {
 #if UNITY_EDITOR
-      FaceData face = FaceManager.face;
+      FaceMeshData face = FaceManager.face;
       if(face != null) {
-        Vector3[] ovalPoints = new Vector3[Constants.OVAL_INDICES.Length];
+        Vector3[] ovalPoints = new Vector3[FaceMesh.OVAL_INDICES.Length];
         int j = 0;
-        foreach(int i in Constants.OVAL_INDICES) {
+        foreach(int i in FaceMesh.OVAL_INDICES) {
           ovalPoints[j] = face.points[i];
           j++;
         }
