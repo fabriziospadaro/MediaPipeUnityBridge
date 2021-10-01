@@ -6,8 +6,8 @@ namespace MediaPipe {
 
     private void OnDrawGizmos() {
 #if UNITY_EDITOR
-      FaceMeshData face = FaceManager.face;
-      if(face != null) {
+      FaceMeshData face = FindObjectOfType<FaceManager>().face;
+      if(face != null && face.points.Length > 0) {
         Vector3[] ovalPoints = new Vector3[FaceMesh.OVAL_INDICES.Length];
         int j = 0;
         foreach(int i in FaceMesh.OVAL_INDICES) {

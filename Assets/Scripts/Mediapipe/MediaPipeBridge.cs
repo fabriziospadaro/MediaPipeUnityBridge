@@ -4,7 +4,6 @@ using UnityEngine;
 using MediaPipe;
 public class MediaPipeBridge : MonoBehaviour{
 
-  public System.Action<FaceMeshData> onPointDeserialized = null;
   public static MediaPipeBridge Instance;
   public MediaPipeModule[] modules;
   private Dictionary<string, MediaPipeModule> moduleDictionary = new Dictionary<string, MediaPipeModule>();
@@ -18,8 +17,16 @@ public class MediaPipeBridge : MonoBehaviour{
     Instance = this;
   }
 
-  void OnLandmarksCollected(string serializedPoints,string moduleName) {
-    moduleDictionary[moduleName].onLandmarkCollected(serializedPoints);
+  public static MediaPipeModule GetModule(string category) {
+    if(Instance.moduleDictionary.ContainsKey(category))
+      return Instance.moduleDictionary[category];
+    else
+      Debug.LogError($"No such module \"{category}\"");
+    return null;
+  }
+
+  public void OnLandmarksCollected(string serializedPoints, string moduleName) {
+    GetModule(moduleName).onLandmarkCollected(serializedPoints);
   }
 
 }

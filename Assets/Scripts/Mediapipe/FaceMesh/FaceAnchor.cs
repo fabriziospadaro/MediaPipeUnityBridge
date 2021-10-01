@@ -8,10 +8,10 @@ namespace MediaPipe {
     public Vector3 offset;
 
     private void Update() {
-      if(FaceManager.face != null) {
-        transform.position = FaceManager.face.points[(int)anchor] + offset;
+      if(FaceManager.Instance.face != null) {
+        transform.position = FaceManager.Instance.face.points[(int)anchor] + offset;
         if(lookRotation)
-          transform.rotation = FaceManager.face.rotation;
+          transform.rotation = FaceManager.Instance.face.rotation;
       }
     }
 

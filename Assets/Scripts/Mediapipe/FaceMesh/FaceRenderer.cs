@@ -18,8 +18,8 @@ public class FaceRenderer : MonoBehaviour{
   }
 
   private void Update() {
-    if(FaceManager.face != null)
-      mesh.vertices = FaceManager.face.points;
+    if(FaceManager.Instance.face != null)
+      mesh.vertices = FaceManager.Instance.face.points;
   }
 
   void DrawBBQuad(Bounds b) {

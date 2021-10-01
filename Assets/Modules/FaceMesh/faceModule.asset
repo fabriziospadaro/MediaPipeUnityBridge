@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c833381693545a086d8e4ce6437746, type: 3}
   m_Name: faceModule
   m_EditorClassIdentifier: 
-  category: 420
+  category: 468
   deserializerWrapper: {fileID: 11400000, guid: fb641de49960d454ebf8b2cd8749ecb7, type: 2}
   processorWrapper: {fileID: 11400000, guid: d9d5e66a1768549edbd13709faa13b65, type: 2}
