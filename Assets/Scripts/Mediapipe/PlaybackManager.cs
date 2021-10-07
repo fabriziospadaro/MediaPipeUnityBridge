@@ -9,18 +9,21 @@ namespace MediaPipe {
     public int episodeId;
     public string[] episodes;
     public float episodeDuration = 0.01f;
-
+    public static PlaybackManager Instance;
     private void Start() {
+#if UNITY_EDITOR
+      Instance = this;
       if(tape) {
         episodes = tape.text.Split(new char[] { '/' });
         StartCoroutine(PlayTape());
       }
+#endif
     }
 
     IEnumerator PlayTape() {
       while(true) {
         episodeId = elapsedFrames % episodes.Length;
-        MediaPipeBridge.Instance.OnLandmarksCollected(episodes[episodeId], category.ToString());
+        MediaPipeBridge.Instance.OnLandmarksCollected(episodes[episodeId]);
         elapsedFrames++;
         yield return new WaitForSeconds(episodeDuration);
       }

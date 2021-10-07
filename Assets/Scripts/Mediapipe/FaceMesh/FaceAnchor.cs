@@ -6,12 +6,13 @@ namespace MediaPipe {
     public FaceMesh.Anchor anchor;
     public bool lookRotation = false;
     public Vector3 offset;
-
+    FaceMeshData face;
     private void Update() {
-      if(FaceManager.Instance.face != null) {
-        transform.position = FaceManager.Instance.face.points[(int)anchor] + offset;
+      face = (FaceMeshData)MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
+      if(face != null) {
+        transform.position = face.points[(int)anchor] + offset;
         if(lookRotation)
-          transform.rotation = FaceManager.Instance.face.rotation;
+          transform.rotation = face.rotation;
       }
     }
 

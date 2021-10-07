@@ -219,7 +219,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 4.7
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -247,7 +247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644049727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.77, y: -0.54, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -263,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 909758382}
   - component: {fileID: 909758383}
+  - component: {fileID: 909758384}
   m_Layer: 0
   m_Name: Generic Debugger
   m_TagString: Untagged
@@ -278,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909758381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5707998, z: 2.5753565}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -296,7 +297,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2ca32fc99c44fd9a8c92404aacf0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 21
+--- !u!114 &909758384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909758381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80981f93adc5c498a8008f57dfd30cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1046783500
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,10 +339,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   category: 21
-  tape: {fileID: 4900000, guid: 5752fc486fe51407cab24634b5e983c2, type: 3}
+  tape: {fileID: 4900000, guid: 025a5d543a19a4dcb978c15f534dd892, type: 3}
   episodeId: 0
   episodes: []
-  episodeDuration: 0.07
+  episodeDuration: 0.02
 --- !u!4 &1046783502
 Transform:
   m_ObjectHideFlags: 0
@@ -343,7 +355,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144220215 stripped
 GameObject:
@@ -866,7 +878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.data[0]
@@ -875,7 +887,7 @@ PrefabInstance:
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: b15a33839eee44292b4f29f3bff8b12d, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
 --- !u!23 &1494663555137142794
@@ -1015,7 +1027,7 @@ Transform:
   m_Children:
   - {fileID: 794146245872625848}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3120527728348452543
 MeshFilter:

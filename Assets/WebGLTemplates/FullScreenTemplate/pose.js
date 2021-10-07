@@ -1,34 +1,32 @@
-window.addEventListener('load', (event) => {
-  
-  function onResults(results) {
-    if(typeof(unityEditor) != "undefined" && results.poseLandmarks && results.poseLandmarks.length > 0){
-      let serializedPoints = serializeLandmarks(results.poseLandmarks);
+function onResults(results) {
+  if(typeof(unityEditor) != "undefined" && results.poseLandmarks && results.poseLandmarks.length > 0){
+    let serializedPoints = serializeLandmarks(results.poseLandmarks);
 
-      if(recordP)
-        mediapipeTapeP += serializedPoints + "/";
-      
-      unityEditor.SendMessage("MediaPipeBridge", "OnPoseLandmarksCollected", serializedPoints);
-    }
+    if(recordP)
+      mediapipeTapeP += "Pose|"+serializedPoints + "/";
+    
+    unityEditor.SendMessage("MediaPipeBridge", "OnLandmarksCollected", "Pose|"+serializedPoints);
   }
+}
 
-  const pose = new Pose({locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-  }});
+const pose = new Pose({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+}});
 
-  pose.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    enableSegmentation: true,
-    smoothSegmentation: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
-  });
-  pose.onResults(onResults);
-  cameraListeners.push(pose);
+pose.setOptions({
+  modelComplexity: 1,
+  smoothLandmarks: true,
+  enableSegmentation: true,
+  smoothSegmentation: true,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
 });
+pose.onResults(onResults);
+cameraListeners.push(pose);
 
-let mediapipeTapeP;
+let mediapipeTapeP = "";
 let recordP = false;
+
 function startPoseRecord(){
   recordP = true;
   document.getElementById("stopPoseRecord").style.visibility = "visible";

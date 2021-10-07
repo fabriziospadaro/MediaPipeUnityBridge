@@ -1,19 +1,19 @@
 window.addEventListener('load', (event) => {
-  
   function onResults(results) {
     if(typeof(unityEditor) != "undefined" && results.multiHandLandmarks && results.multiHandLandmarks.length > 0){
       let serializedPoints = serializeLandmarks(results.multiHandLandmarks[0]);
 
       if(recordH)
-        mediapipeTapeH += serializedPoints + "/";
-      unityEditor.SendMessage("MediaPipeBridge", "OnHandsLandmarksCollected", serializedPoints);
+        mediapipeTapeH += "Hands|"+serializedPoints + "/";
+      unityEditor.SendMessage("MediaPipeBridge", "OnLandmarksCollected", "Hands|"+serializedPoints);
     }
   }
 
   const hands = new Hands({locateFile: (file) => {
     return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
   }});
-  
+const videoElement = document.getElementsByClassName('input_video')[0];
+
   hands.setOptions({
     maxNumHands: 2,
     minDetectionConfidence: 0.5,
@@ -21,12 +21,19 @@ window.addEventListener('load', (event) => {
   });
   hands.onResults(onResults);
 
-  cameraListeners.push(hands);
+  const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
 });
 
+});
 
-let mediapipeTapeH;
+let mediapipeTapeH = "";
 let recordH = false;
+
 function startHandsRecord(){
   recordH = true;
   document.getElementById("stopHandsRecord").style.visibility = "visible";

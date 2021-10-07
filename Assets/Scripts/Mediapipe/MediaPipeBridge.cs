@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MediaPipe;
-public class MediaPipeBridge : MonoBehaviour{
+using System.Runtime.InteropServices;
 
+public class MediaPipeBridge : MonoBehaviour{
+  /*
+  [DllImport("__Internal")]
+  private static extern void LoadMPModule(string name);
+  */
   public static MediaPipeBridge Instance;
   public MediaPipeModule[] modules;
   private Dictionary<string, MediaPipeModule> moduleDictionary = new Dictionary<string, MediaPipeModule>();
@@ -13,6 +18,8 @@ public class MediaPipeBridge : MonoBehaviour{
     foreach(MediaPipeModule l in modules) {
       l.Initialize(cam);
       moduleDictionary.Add(l.category.ToString(), l);
+      //if(!Application.isEditor)
+        //LoadMPModule(l.category.ToString());
     }
     Instance = this;
   }
@@ -21,12 +28,17 @@ public class MediaPipeBridge : MonoBehaviour{
     if(Instance.moduleDictionary.ContainsKey(category))
       return Instance.moduleDictionary[category];
     else
-      Debug.LogError($"No such module \"{category}\"");
-    return null;
+      throw new System.NotImplementedException($"No such module \"{category}\"");
   }
 
-  public void OnLandmarksCollected(string serializedPoints, string moduleName) {
-    GetModule(moduleName).onLandmarkCollected(serializedPoints);
+  public static GenericLandMarksData GetData(string category) {
+    return GetModule(category).ProcessorData;
+  }
+
+
+  public void OnLandmarksCollected(string args) {
+    string[] dataArgs = args.Split(new char[] { '|' });
+    GetModule(dataArgs[0]).onLandmarkCollected(dataArgs[1]);
   }
 
 }

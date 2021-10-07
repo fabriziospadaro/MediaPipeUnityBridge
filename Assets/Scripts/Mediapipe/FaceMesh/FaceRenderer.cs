@@ -18,8 +18,9 @@ public class FaceRenderer : MonoBehaviour{
   }
 
   private void Update() {
-    if(FaceManager.Instance.face != null)
-      mesh.vertices = FaceManager.Instance.face.points;
+    face = (FaceMeshData)MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
+    if(face != null)
+      mesh.vertices = face.points;
   }
 
   void DrawBBQuad(Bounds b) {
