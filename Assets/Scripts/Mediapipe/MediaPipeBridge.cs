@@ -5,10 +5,10 @@ using MediaPipe;
 using System.Runtime.InteropServices;
 
 public class MediaPipeBridge : MonoBehaviour{
-  /*
+  
   [DllImport("__Internal")]
   private static extern void LoadMPModule(string name);
-  */
+  
   public static MediaPipeBridge Instance;
   public MediaPipeModule[] modules;
   private Dictionary<string, MediaPipeModule> moduleDictionary = new Dictionary<string, MediaPipeModule>();
@@ -18,8 +18,8 @@ public class MediaPipeBridge : MonoBehaviour{
     foreach(MediaPipeModule l in modules) {
       l.Initialize(cam);
       moduleDictionary.Add(l.category.ToString(), l);
-      //if(!Application.isEditor)
-        //LoadMPModule(l.category.ToString());
+      if(!Application.isEditor)
+        LoadMPModule(l.category.ToString());
     }
     Instance = this;
   }

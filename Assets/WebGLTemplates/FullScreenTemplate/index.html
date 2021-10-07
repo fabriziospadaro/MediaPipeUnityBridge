@@ -5,13 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>MediaPipeUnityBridge</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
     <script src="mediaPipeSerializer.js"></script>
-    <script src="hands.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body style="text-align: center">
@@ -19,7 +13,6 @@
     <div class="fullscreen">
       <video class="input_video"></video>
       <canvas id="unity-canvas" style="background: #231F20"></canvas>
-      <canvas class="output_canvas" width="1280px" height="720px"></canvas>
     </div>
     <!-- <div style="position: absolute;">
       <button id = "startFaceRecord" onclick="startFaceRecord()">RECORD FACE</button>
@@ -35,5 +28,6 @@
       <button id = "stopObjectronRecord" style="visibility: hidden;" onclick="stopObjectronRecord()">STOP OBJECTRON RECORD</button>
     </div> -->
     <script src="app.js"></script>
+    <script src="cameraManager.js"></script>
   </body>
 </html>

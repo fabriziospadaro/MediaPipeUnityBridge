@@ -1,4 +1,3 @@
-/*
 mergeInto(LibraryManager.library, {
   LoadMPModule: function (moduleName) {
     var name = Pointer_stringify(moduleName);
@@ -24,4 +23,3 @@ mergeInto(LibraryManager.library, {
     document.head.appendChild(script);
   },
 });
-*/
