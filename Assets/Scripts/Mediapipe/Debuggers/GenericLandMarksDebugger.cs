@@ -5,6 +5,12 @@ using Shapes;
 using UnityEngine;
 namespace MediaPipe {
   public class GenericLandMarksDebugger : MonoBehaviour {
+    LandMarkPointsSmoother landMarkPointsSmoother;
+
+    private void Start() {
+      landMarkPointsSmoother = new LandMarkPointsSmoother(10);
+    }
+
     private void OnRenderObject(){
       if(Application.isPlaying) {
         List<MediaPipeModule.Category> categories = new List<MediaPipeModule.Category>();
@@ -16,11 +22,13 @@ namespace MediaPipe {
 
         foreach(MediaPipeModule.Category category in categories) {
           var data = MediaPipeBridge.GetModule(category.ToString()).ProcessorData;
+          landMarkPointsSmoother.Step(data.points, Time.deltaTime);
+
           Draw.BlendMode = ShapesBlendMode.Transparent;
           DrawWireCube(data.bound.center, data.rotation, data.bound.size / 2);
           Draw.BlendMode = ShapesBlendMode.Opaque;
 
-          foreach(Vector3 v in data.points)
+          foreach(Vector3 v in landMarkPointsSmoother.points)
             Draw.Sphere(v, 0.03f, Color.red);
 
           Draw.Thickness = 0.02f;
