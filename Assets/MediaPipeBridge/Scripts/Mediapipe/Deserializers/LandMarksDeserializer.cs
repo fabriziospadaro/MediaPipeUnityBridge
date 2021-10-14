@@ -25,7 +25,8 @@ namespace MediaPipe {
         float.TryParse(dataChunk[i + 1], out float y);
         float.TryParse(dataChunk[i + 2], out float z);
         //invert x,y and convert viewport to world space
-        Vector3 sToW = cam.ViewportToWorldPoint(new Vector3(1 - x, 1 - y, 6 + (z * 7.5f)));
+        //was Vector3 sToW = cam.ViewportToWorldPoint(new Vector3(1 - x, 1 - y, 6 + (z * 7.5f)));
+        Vector3 sToW = cam.ViewportToWorldPoint(new Vector3(1 - x, 1 - y, 6 + z));
         points[i/3] = sToW;
       }
 

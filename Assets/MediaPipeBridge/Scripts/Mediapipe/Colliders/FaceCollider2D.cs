@@ -14,11 +14,11 @@ namespace MediaPipe {
 
     void Update() {
       var data = MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
-      Vector2[] points = new Vector2[FaceMesh.OVAL_INDICES.Length];
+      Vector2[] points = new Vector2[FaceMeshData.Constants.SILHOUETTE.Length];
       Vector2 maxSize = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, transform.position.z));
 
-      for(int i = 0; i < FaceMesh.OVAL_INDICES.Length; i++) {
-        Vector3 p = data.points[FaceMesh.OVAL_INDICES[(i + 1) % FaceMesh.OVAL_INDICES.Length]];
+      for(int i = 0; i < FaceMeshData.Constants.SILHOUETTE.Length; i++) {
+        Vector3 p = data.points[FaceMeshData.Constants.SILHOUETTE[(i + 1) % FaceMeshData.Constants.SILHOUETTE.Length]];
         points[i] = cam.WorldToViewportPoint(p) * (maxSize * 2) - maxSize;
       }
 

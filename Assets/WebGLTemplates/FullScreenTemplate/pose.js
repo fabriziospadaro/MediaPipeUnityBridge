@@ -14,7 +14,7 @@ const pose = new Pose({locateFile: (file) => {
 }});
 
 pose.setOptions({
-  modelComplexity: 1,
+  modelComplexity: 2,
   smoothLandmarks: true,
   enableSegmentation: true,
   smoothSegmentation: true,

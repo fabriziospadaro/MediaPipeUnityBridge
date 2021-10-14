@@ -4,7 +4,7 @@ using System.Reflection;
 namespace MediaPipe {
   [CreateAssetMenu(fileName = "MediaPipeModule", menuName = "ScriptableObject/MediaPipe/Module", order = 100)]
   public class MediaPipeModule : ScriptableObject {
-    public enum Category { FaceMesh = 468, Hands = 21, Pose = 45,Objectron = 9 }
+    public enum Category { FaceMesh = 468, Hands = 21, Pose = 33,Objectron = 9 }
     public Category category;
 
     private LandMarksDeserializer landMarksDeserializer;

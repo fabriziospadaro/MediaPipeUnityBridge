@@ -107,6 +107,7 @@ namespace MediaPipe {
       public static readonly int[] RIGHT_CHEEK = new int[] { 205 };
       public static readonly int[] LEFT_CHEEK = new int[] { 425 };
 
+      public enum Anchor { LEFT_EYE, RIGHT_EYE, LEFT_EAR = 234, RIGHT_EAR = 454, HEAD_TOP = 10 }
     }
 
     public FaceMeshData(Vector3[] points) : base(points) {

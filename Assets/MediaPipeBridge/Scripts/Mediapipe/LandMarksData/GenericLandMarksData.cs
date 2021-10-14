@@ -7,7 +7,7 @@ namespace MediaPipe {
     public Vector3 up;
     public Vector3 right;
     public Vector3 forward;
-    public Quaternion rotation;
+    public Quaternion rotation = Quaternion.identity;
 
     public GenericLandMarksData(Vector3[] points) {
       this.points = points;
@@ -25,8 +25,10 @@ namespace MediaPipe {
 
     public void CalculateRotation() {
       CalculateBasisVector();
-      rotation = Quaternion.LookRotation(forward, up);
-      rotation = Quaternion.Euler(-rotation.eulerAngles.x, 180 + rotation.eulerAngles.y, -rotation.eulerAngles.z);
+      if(up != default && right != default && forward != default) {
+        rotation = Quaternion.LookRotation(forward, up);
+        rotation = Quaternion.Euler(-rotation.eulerAngles.x, 180 + rotation.eulerAngles.y, -rotation.eulerAngles.z);
+      }
     }
   }
 }

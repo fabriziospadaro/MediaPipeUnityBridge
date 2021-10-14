@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 909758383}
   - component: {fileID: 909758384}
   - component: {fileID: 909758385}
+  - component: {fileID: 909758386}
   m_Layer: 0
   m_Name: Generic Debugger
   m_TagString: Untagged
@@ -270,9 +271,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909758381}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5904df6df8d06469f8089861aaa562fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &909758386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909758381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a791b6d54ae847629319827cfd62995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1046783500
@@ -304,8 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a91eccd14754c0fa5f01d8ffc3c736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 468
-  tape: {fileID: 4900000, guid: 1a863c5a78e1f434d80ff4669e383a80, type: 3}
+  category: 33
+  tape: {fileID: 4900000, guid: f2d352b57bb594393a317b0ad7a6260c, type: 3}
   episodeId: 0
   episodes: []
   episodeDuration: 0.1
@@ -642,11 +655,11 @@ PrefabInstance:
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: b15a33839eee44292b4f29f3bff8b12d, type: 2}
+      objectReference: {fileID: 11400000, guid: e654d9179b83c4c3ba522a8b78a3e501, type: 2}
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: b15a33839eee44292b4f29f3bff8b12d, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
 --- !u!1001 &1660672223226619156
@@ -666,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1660672223703748877, guid: 69c6e630438a2420b9cef1467fc5c2ca, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1660672223703748878, guid: 69c6e630438a2420b9cef1467fc5c2ca, type: 3}
       propertyPath: mesh
