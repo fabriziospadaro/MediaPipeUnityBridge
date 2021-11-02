@@ -1,5 +1,5 @@
 using UnityEngine;
-//https://github.com/tensorflow/tfjs-models/blob/master/facemesh/mesh_map.jpg
+//https://github.com/google/mediapipe/blob/master/mediapipe/modules/face_geometry/data/canonical_face_model_uv_visualization.png
 namespace MediaPipe {
   [System.Serializable]
   public class FaceMeshData : GenericLandMarksData {
@@ -106,8 +106,9 @@ namespace MediaPipe {
       public static readonly int[] NOSE_LEFT_CORNER = new int[] { 327 };
       public static readonly int[] RIGHT_CHEEK = new int[] { 205 };
       public static readonly int[] LEFT_CHEEK = new int[] { 425 };
-
-      public enum Anchor { LEFT_EYE, RIGHT_EYE, LEFT_EAR = 234, RIGHT_EAR = 454, HEAD_TOP = 10 }
+      public const int LEFT_EAR = 234;
+      public const int RIGHT_EAR = 454;
+      public enum Anchor { LEFT_EYE, RIGHT_EYE, LEFT_EAR = 234, RIGHT_EAR = 454, HEAD_TOP = 10, NOSE_TIP = 168 }
     }
 
     public FaceMeshData(Vector3[] points) : base(points) {
@@ -116,8 +117,12 @@ namespace MediaPipe {
     public override void CalculateBasisVector() {
       //TODO HARDCODED POINTS, CONSTANTIZE THEM
       up = -(points[152] - points[10]).normalized;
-      right = (points[234] - points[454]).normalized;
+      right = (points[Constants.LEFT_EAR] - points[Constants.RIGHT_EAR]).normalized;
       forward = Vector3.Cross(up, right);
+    }
+
+    public override void CalculateScale() {
+      uniformScale = (Vector3.Distance(points[Constants.LEFT_EAR], points[Constants.RIGHT_EAR]) / 2.56f) * 1.2f;
     }
   }
 }

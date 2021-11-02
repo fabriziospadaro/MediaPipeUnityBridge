@@ -6,7 +6,7 @@ namespace MediaPipe {
 
     public System.Action<Vector3[]> onPointsDeserialized;
     public int landMarksCount = 0;
-    private Camera cam;
+    public Camera cam;
 
     public void SetDeps(Camera cam) {
       this.cam = cam;

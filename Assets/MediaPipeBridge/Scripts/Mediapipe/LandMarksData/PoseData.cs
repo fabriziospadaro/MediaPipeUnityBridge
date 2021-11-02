@@ -52,11 +52,8 @@ namespace MediaPipe {
       public const int RIGHT_FOOT_INDEX = 32;
     }
 
-    public Vector3 torsoUp;
-    public Vector3 torsoRight;
-    public Vector3 torsoForward;
-    public Quaternion torsoRotation;
-
+    public RotationComponent torsoRotation;
+    public RotationComponent headRotation;
     public PoseData(Vector3[] points) : base(points) { CalculateBodyRotations(); }
 
     public override void CalculateBasisVector() {
@@ -68,11 +65,15 @@ namespace MediaPipe {
     }
 
     public void CalculateBodyRotations() {
-      torsoUp = (shouldersMidpoint - hipsMidpoint).normalized;
-      torsoRight = Vector3.Lerp((points[Constants.RIGHT_HIP] - points[Constants.LEFT_HIP]).normalized, (points[Constants.RIGHT_SHOULDER] - points[Constants.LEFT_SHOULDER]).normalized,0.5f);
-      torsoForward = Vector3.Cross(torsoUp, torsoRight);
-      torsoRotation = Quaternion.LookRotation(torsoForward, torsoUp);
-      torsoRotation = Quaternion.Euler(-torsoRotation.eulerAngles.x, 180 + torsoRotation.eulerAngles.y, -torsoRotation.eulerAngles.z);
+      Vector3 u = (shouldersMidpoint - hipsMidpoint).normalized;
+      Vector3 r = Vector3.Lerp((points[Constants.RIGHT_HIP] - points[Constants.LEFT_HIP]).normalized, (points[Constants.RIGHT_SHOULDER] - points[Constants.LEFT_SHOULDER]).normalized, 0.5f);
+      torsoRotation = new RotationComponent(up: u,right: r);
+      torsoRotation.ComputeRotation();
+
+      r = (points[Constants.RIGHT_EAR] - points[Constants.LEFT_EAR]).normalized;
+      u = (points[Constants.NOSE] - mouthMidpoint).normalized;
+      headRotation = new RotationComponent(right: r, up: u);
+      headRotation.ComputeRotation();
     }
 
     public Vector3 anklesMidpoint { get { return Vector3.Lerp(points[Constants.LEFT_ANKLE], points[Constants.RIGHT_ANKLE], 0.5f); } }
@@ -80,5 +81,6 @@ namespace MediaPipe {
     public Vector3 shouldersMidpoint { get { return Vector3.Lerp(points[Constants.LEFT_SHOULDER], points[Constants.RIGHT_SHOULDER], 0.5f); } }
 
     public Vector3 torsoCenter { get { return Vector3.Lerp(shouldersMidpoint, hipsMidpoint, 0.5f); } }
+    public Vector3 mouthMidpoint { get { return Vector3.Lerp(points[Constants.MOUTH_LEFT], points[Constants.MOUTH_RIGHT], 0.5f); } }
   }
 }

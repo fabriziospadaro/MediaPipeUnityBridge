@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c833381693545a086d8e4ce6437746, type: 3}
-  m_Name: FaceModule
+  m_Script: {fileID: 11500000, guid: 042aa994a13244d3480a1556666ef556, type: 3}
+  m_Name: FaceLandMarksDeserializer
   m_EditorClassIdentifier: 
-  category: 468
-  deserializerWrapper: {fileID: 11400000, guid: fff6860faff744d7db5441cdc57cd71a, type: 2}
-  processorWrapper: {fileID: 11400000, guid: d9d5e66a1768549edbd13709faa13b65, type: 2}
