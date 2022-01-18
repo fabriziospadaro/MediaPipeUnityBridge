@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace MediaPipe {
-  public class PlaybackManager : MonoBehaviour {
+  public class PlaybackManager: MonoBehaviour {
     public MediaPipeModule.Category category;
     public TextAsset tape;
     private int elapsedFrames = 0;
@@ -10,7 +9,7 @@ namespace MediaPipe {
     public string[] episodes;
     public float episodeDuration = 0.01f;
     public static PlaybackManager Instance;
-    private void Start() {
+    private void Start(){
 #if UNITY_EDITOR
       Instance = this;
       if(tape) {
@@ -20,14 +19,13 @@ namespace MediaPipe {
 #endif
     }
 
-    IEnumerator PlayTape() {
+    IEnumerator PlayTape(){
       while(true) {
         episodeId = elapsedFrames % episodes.Length;
-        MediaPipeBridge.Instance.OnLandmarksCollected(episodes[episodeId]);
+        MediaPipeBridge.Instance.OnResult(episodes[episodeId]);
         elapsedFrames++;
         yield return new WaitForSeconds(episodeDuration);
       }
     }
-
   }
 }

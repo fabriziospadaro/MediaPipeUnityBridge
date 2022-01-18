@@ -5,36 +5,44 @@ using Shapes;
 using UnityEngine;
 namespace MediaPipe {
   public class GenericLandMarksDebugger : MonoBehaviour {
-    LandMarkPointsSmoother landMarkPointsSmoother;
+    LandMarkPointsSmoother[] landMarkPointsSmoother;
+    List<MediaPipeModule.Category> categories = new List<MediaPipeModule.Category>();
 
     private void Start() {
-      landMarkPointsSmoother = new LandMarkPointsSmoother(10);
+      if(Application.isEditor)
+        categories.Add(PlaybackManager.Instance.category);
+      else
+        categories = MediaPipeBridge.Instance.modules.Select(f => f.category).ToList();
+
+      landMarkPointsSmoother = new LandMarkPointsSmoother[categories.Count];
+      for(int i = 0;i<categories.Count;i++)
+        landMarkPointsSmoother[i] = new LandMarkPointsSmoother(10);
     }
 
     private void OnRenderObject(){
       if(Application.isPlaying) {
-        List<MediaPipeModule.Category> categories = new List<MediaPipeModule.Category>();
-
-        if(Application.isEditor)
-          categories.Add(PlaybackManager.Instance.category);
-        else
-          categories = MediaPipeBridge.Instance.modules.Select(f => f.category).ToList();
-
+        Draw.BlendMode = ShapesBlendMode.Opaque;
+        Draw.Cube(transform.position, 10, Color.red);
+        
+        int i = 0;
         foreach(MediaPipeModule.Category category in categories) {
           var data = MediaPipeBridge.GetModule(category.ToString()).ProcessorData;
-          landMarkPointsSmoother.Step(data.points, Time.deltaTime);
+          if(data.state == GenericLandMarksData.State.Stay) {
+            landMarkPointsSmoother[i].Step(data.points, Time.deltaTime);
 
-          Draw.BlendMode = ShapesBlendMode.Transparent;
-          DrawWireCube(data.bound.center, data.rotation, data.bound.size / 2);
-          Draw.BlendMode = ShapesBlendMode.Opaque;
+            Draw.BlendMode = ShapesBlendMode.Transparent;
+            DrawWireCube(data.bound.center, data.rotation, data.bound.size / 2);
+            Draw.BlendMode = ShapesBlendMode.Opaque;
 
-          foreach(Vector3 v in landMarkPointsSmoother.points)
-            Draw.Sphere(v, 0.03f, Color.red);
+            foreach(Vector3 v in landMarkPointsSmoother[i].points)
+              Draw.Sphere(v, 0.03f, Color.red);
 
-          Draw.Thickness = 0.02f;
-          Draw.Line(data.bound.center, data.bound.center + data.up, Color.green);
-          Draw.Line(data.bound.center, data.bound.center + data.forward, Color.blue);
-          Draw.Line(data.bound.center, data.bound.center + data.right, Color.red);
+            Draw.Thickness = 0.02f;
+            Draw.Line(data.bound.center, data.bound.center + data.up, Color.green);
+            Draw.Line(data.bound.center, data.bound.center + data.forward, Color.blue);
+            Draw.Line(data.bound.center, data.bound.center + data.right, Color.red);
+          }
+          i++;
         }
 
       }

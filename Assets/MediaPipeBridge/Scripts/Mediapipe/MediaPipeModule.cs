@@ -3,8 +3,8 @@ using UnityEngine;
 using System.Reflection;
 namespace MediaPipe {
   [CreateAssetMenu(fileName = "MediaPipeModule", menuName = "ScriptableObject/MediaPipe/Module", order = 100)]
-  public class MediaPipeModule : ScriptableObject {
-    public enum Category { FaceMesh = 468, Hands = 21, Pose = 33,Objectron = 9 }
+  public class MediaPipeModule: ScriptableObject {
+    public enum Category { FaceMesh = 468, Hands = 21, Pose = 33, Objectron = 9 }
     public Category category;
 
     private LandMarksDeserializer landMarksDeserializer;
@@ -17,7 +17,7 @@ namespace MediaPipe {
 
     public Action<string> onLandmarkCollected;
 
-    public void Initialize(Camera cam) {
+    public void Initialize(Camera cam){
       object landMarkProcessorInstance = Assembly.GetExecutingAssembly().CreateInstance("MediaPipe." + processorWrapper.name);
       landMarkProcessor = (LandMarksProcessor)landMarkProcessorInstance;
       if(landMarkProcessorInstance == null) {
@@ -33,12 +33,13 @@ namespace MediaPipe {
       landMarksDeserializer = (LandMarksDeserializer)landMarkDeserializerInstance;
 
       landMarksDeserializer.SetDeps(cam);
-      landMarksDeserializer.SetVars(landMarkProcessor.OnPointsDeserialized,(int)category);
+      landMarksDeserializer.SetVars(landMarkProcessor.OnPointsDeserialized, (int)category);
       onLandmarkCollected += landMarksDeserializer.OnLandmarkCollected;
     }
 
     public GenericLandMarksData ProcessorData {
       get { return landMarkProcessor.data; }
+      set { landMarkProcessor.data = value; }
     }
   }
 }

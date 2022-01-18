@@ -40,9 +40,14 @@ window.addEventListener('load', (event) => {
 });
 
 function refreshUnityRatio() {
-	let data = videoDimensions(document.querySelector(".input_video"));
-	document.getElementById("unity-canvas").style.width = data["width"]+ "px";
-	document.getElementById("unity-canvas").style.height = data["height"] + "px";
+	var interval = window.setInterval(function(){
+	  	let data = videoDimensions(document.querySelector(".input_video"));
+	  	if(!Number.isNaN(data.height)){
+	  		document.getElementById("unity-canvas").style.width = data["width"]+ "px";
+			document.getElementById("unity-canvas").style.height = data["height"] + "px";
+	  		clearInterval(interval);
+	  	}
+	}, 1000);
 }
 
 //10x https://stackoverflow.com/questions/17056654/getting-the-real-html5-video-width-and-height
