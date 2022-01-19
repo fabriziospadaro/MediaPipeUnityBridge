@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MediaPipe {
   [System.Serializable]
-  public class FaceMeshOptions {
+  public struct FaceMeshOptions {
     public const string NAME = "FaceMesh";
     public bool enabled;
     public int maxNumFaces;
@@ -12,7 +12,7 @@ namespace MediaPipe {
     public float minDetectionConfidence;
     public float minTrackingConfidence;
   }
-  public class HandsOptions {
+  public struct HandsOptions {
     public const string NAME = "Hands";
     public bool enabled;
     public int maxNumHands;
@@ -20,7 +20,13 @@ namespace MediaPipe {
     public float minDetectionConfidence;
     public float minTrackingConfidence;
   }
-
+  public struct GeneralSettings {
+    public const string NAME = "General";
+    public bool debug;
+    public enum SizingRule { Size, Ratio };
+    public SizingRule sizingRule;
+    public Vector2Int dimension;
+  }
   class Settings {
     public static string[] enabledModules {
       get {

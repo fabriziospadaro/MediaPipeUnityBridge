@@ -1,29 +1,15 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
-public class FaceMeshOptions {
-  public const string NAME = "FaceMesh";
-  public bool enabled;
-  public int maxNumFaces;
-  public bool refineLandmarks;
-  public float minDetectionConfidence;
-  public float minTrackingConfidence;
-}
-public class HandsOptions {
-  public const string NAME = "Hands";
-  public bool enabled;
-  public int maxNumHands;
-  public int modelComplexity;
-  public float minDetectionConfidence;
-  public float minTrackingConfidence;
-}
+using MediaPipe;
 public class SettingsWindow: EditorWindow {
   FaceMeshOptions faceMeshOptions;
   HandsOptions handsOptions;
+  GeneralSettings generalSettings;
   bool faceFoldout = true;
   bool handsFoldout = true;
 
-  [MenuItem("Window/MediaPipeBridge Settings")]
+  [MenuItem("MediaPipeBridge/Settings")]
   public static void ShowWindow(){
     EditorWindow.GetWindow(typeof(SettingsWindow));
   }
@@ -34,16 +20,48 @@ public class SettingsWindow: EditorWindow {
   void LoadSettings() {
     LoadFaceMeshSetting();
     LoadHandsOptions();
+    LoadGeneralSettings();
   }
   void OnGUI(){
-    GUILayout.Label("Active Modules", EditorStyles.boldLabel);
+    GeneralSettingsInspector();
+    EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+    ModuleSettingsInspector();
+  }
+  void GeneralSettingsInspector() {
+    GUILayout.Label("General Settings", EditorStyles.centeredGreyMiniLabel);
+    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
     EditorGUILayout.Space();
+    EditorGUI.BeginChangeCheck();
+    generalSettings.debug = EditorGUILayout.Toggle("Debug mode", generalSettings.debug);
+    EditorGUILayout.Space();
+    generalSettings.sizingRule = (GeneralSettings.SizingRule)EditorGUILayout.EnumPopup("Sizing rule",generalSettings.sizingRule);
+    EditorGUILayout.Space();
+    EditorGUI.indentLevel++;
+    switch(generalSettings.sizingRule) {
+      case GeneralSettings.SizingRule.Ratio:
+      generalSettings.dimension = EditorGUILayout.Vector2IntField("", generalSettings.dimension);
+      generalSettings.dimension = new Vector2Int(Mathf.Clamp(generalSettings.dimension.x,0,20), Mathf.Clamp(generalSettings.dimension.y, 0, 20));
+      break;
+      case GeneralSettings.SizingRule.Size:
+      generalSettings.dimension = EditorGUILayout.Vector2IntField("", generalSettings.dimension);
+      //clamp it to 4k
+      generalSettings.dimension = new Vector2Int(Mathf.Clamp(generalSettings.dimension.x, 0, 3840), Mathf.Clamp(generalSettings.dimension.y, 0, 3840));
+      break;
+    }
+    EditorGUI.indentLevel--;
+    if(EditorGUI.EndChangeCheck())
+      SaveSettings(GeneralSettings.NAME,generalSettings);
+    EditorGUILayout.EndHorizontal();
+  }
 
+  void ModuleSettingsInspector() {
+    GUILayout.Label("Active Modules", EditorStyles.centeredGreyMiniLabel);
+    EditorGUILayout.Space();
     FaceMeshInspector();
     HandsInspector();
   }
-
   void FaceMeshInspector() {
+    GUILayout.BeginVertical("", EditorStyles.helpBox);
     faceFoldout = EditorGUILayout.Foldout(faceFoldout, "FaceMesh");
     if(faceFoldout) {
       EditorGUI.indentLevel++;
@@ -57,11 +75,13 @@ public class SettingsWindow: EditorWindow {
       EditorGUILayout.EndToggleGroup();
       
       if(EditorGUI.EndChangeCheck())
-        SaveSettings(MediaPipe.FaceMeshOptions.NAME, faceMeshOptions);
+        SaveSettings(FaceMeshOptions.NAME, faceMeshOptions);
       EditorGUI.indentLevel--;
     }
+    GUILayout.EndVertical();
   }
   void HandsInspector() {
+    GUILayout.BeginVertical("", EditorStyles.helpBox);
     handsFoldout = EditorGUILayout.Foldout(handsFoldout, "Hands");
     if(handsFoldout) {
       EditorGUI.indentLevel++;
@@ -77,27 +97,32 @@ public class SettingsWindow: EditorWindow {
         SaveSettings(HandsOptions.NAME, handsOptions);
       EditorGUI.indentLevel--;
     }
+    GUILayout.EndVertical();
   }
   void SaveSettings(string key,object obj) {
     string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{key}_Settings.json";
     string settingsRaw = JsonUtility.ToJson(obj);
     File.WriteAllText(settingsPath, settingsRaw);
+    AssetDatabase.Refresh();
   }
   void LoadFaceMeshSetting(){
     string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{FaceMeshOptions.NAME}_Settings.json";
     try {
       faceMeshOptions = (FaceMeshOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(FaceMeshOptions));
-    }
-    
-    catch { faceMeshOptions = new FaceMeshOptions(); }
+    }catch {}
   }
   void LoadHandsOptions(){
     string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{HandsOptions.NAME}_Settings.json";
     try {
       handsOptions = (HandsOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(HandsOptions));
-    }
-    catch {handsOptions = new HandsOptions();}
+    }catch {}
   }
-
+  void LoadGeneralSettings(){
+    string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{GeneralSettings.NAME}_Settings.json";
+    try {
+      generalSettings = (GeneralSettings)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(GeneralSettings));
+    }
+    catch { }
+  }
 }
  
