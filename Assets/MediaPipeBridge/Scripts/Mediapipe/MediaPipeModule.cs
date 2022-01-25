@@ -15,9 +15,9 @@ namespace MediaPipe {
     [SerializeField]
     private LandMarksProcessorWrapper processorWrapper;
 
-    public Action<string> onLandmarkCollected;
-
-    public void Initialize(Camera cam){
+    public Action<string, int> onLandmarkCollected;
+    public int maxTrackedObjects = 0;
+    public void Initialize(Camera cam,ScriptableSettings settings){
       object landMarkProcessorInstance = Assembly.GetExecutingAssembly().CreateInstance("MediaPipe." + processorWrapper.name);
       landMarkProcessor = (LandMarksProcessor)landMarkProcessorInstance;
       if(landMarkProcessorInstance == null) {
@@ -30,16 +30,33 @@ namespace MediaPipe {
         Debug.LogError($"No such class \"{deserializerWrapper.name}\" found inside the MediaPipe napespace");
         return;
       }
+      maxTrackedObjects = MaxTrackedObjectsByCategory(category, settings);
       landMarksDeserializer = (LandMarksDeserializer)landMarkDeserializerInstance;
-
+      landMarkProcessor.InitializeResults(maxTrackedObjects);
       landMarksDeserializer.SetDeps(cam);
       landMarksDeserializer.SetVars(landMarkProcessor.OnPointsDeserialized, (int)category);
       onLandmarkCollected += landMarksDeserializer.OnLandmarkCollected;
     }
+    public GenericLandMarksData GetProcessorData(int i) {
+      return landMarkProcessor.results[i];
+    }
 
-    public GenericLandMarksData ProcessorData {
-      get { return landMarkProcessor.data; }
-      set { landMarkProcessor.data = value; }
+    public GenericLandMarksData SetProcessorData(int i, GenericLandMarksData value){
+      return landMarkProcessor.results[i] = value;
+    }
+
+    public GenericLandMarksData[] processorResults{
+      get { return landMarkProcessor.results; }
+    }
+
+    public static int MaxTrackedObjectsByCategory(Category category, ScriptableSettings settings) {
+      switch(category) {
+        case Category.FaceMesh:
+        return settings.faceMeshOptions.maxNumFaces;
+        case Category.Hands:
+        return settings.handsOptions.maxNumHands;
+      }
+      throw new Exception($"{category} is not mapped with his related max tracked mobject setting");
     }
   }
 }

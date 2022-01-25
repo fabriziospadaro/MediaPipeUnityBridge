@@ -13,46 +13,42 @@ class GenericTrackableModule {
     this.model.setOptions(options);
     this.model.onResults(this.onResults.bind(this));
     cameraListeners.push(this.model);
-    this.mediapipeTape = "";
-    this.record = false;
+    if(%DEBUG_MODE%){
+      window.addEventListener('load', (event) => {
+        this.tapeRecorder = new TapeRecorder(moduleName);
+      });
+    }
     this.resultKey = this.detectResultKey;
   }
 
   onResults(results) {
-    let serializedData;
+    let completeData = `${this.moduleName}|`;
     if(typeof(unityEditor) != "undefined" && results[this.resultKey] && results[this.resultKey].length > 0){
-      let serializedPoints = serializeLandmarks(results[this.resultKey][0]);
-      if(
-        this.faceState == GenericTrackableModule.EXIT_STATE ||
-        this.faceState == GenericTrackableModule.DESTROY_STATE
-      )
-        this.faceState = GenericTrackableModule.ENTER_STATE;
-      else
-        this.faceState = GenericTrackableModule.STAY_STATE;
-      serializedData = `${this.moduleName}|${this.faceState}|${serializedPoints}`;
+        console.log(results);
+        for(let points of results[this.resultKey]){
+          let serializedPoints = serializeLandmarks(points);
+          if(
+            this.faceState == GenericTrackableModule.EXIT_STATE ||
+            this.faceState == GenericTrackableModule.DESTROY_STATE
+          )
+            this.faceState = GenericTrackableModule.ENTER_STATE;
+          else
+            this.faceState = GenericTrackableModule.STAY_STATE;
+            //completeData += `${this.faceState}$${serializedPoints}^`;
+            completeData += `2$${serializedPoints}^`;
+      }
+      completeData = completeData.slice(0, -1);
     }
+    /*
     else{
       this.faceState = this.faceState !== GenericTrackableModule.EXIT_STATE ? GenericTrackableModule.EXIT_STATE : GenericTrackableModule.DESTROY_STATE;
-      serializedData = `${this.moduleName}|${this.faceState}`;
+      let completeData = `${this.moduleName}`;
     }
-  
-    if(this.record)
-      this.mediapipeTape += serializedData + "/";
-    unityEditor.SendMessage("MediaPipeBridge", "OnResult", serializedData);
-  }
-
-  recordTape(){
-    record = true;
-    document.getElementById(`stop${this.moduleName}Tape`).style.visibility = "visible";
-    document.getElementById(`start${this.moduleName}Tape`).style.visibility = "hidden";
-  }
-  
-  stopTape(){
-    record = false;
-    document.getElementById(`stop${this.moduleName}Tape`).style.visibility = "hidden";
-    document.getElementById(`start${this.moduleName}Tape`).style.visibility = "visible";
-    mediapipeTape = mediapipeTape.slice(0, -1);
-    console.log(mediapipeTape);
+*/
+    //todo remove last char
+    
+    this.tapeRecorder?.recordEpisode(completeData);
+    unityEditor.SendMessage("MediaPipeBridge", "OnResult", completeData);
   }
 
   get detectResultKey(){

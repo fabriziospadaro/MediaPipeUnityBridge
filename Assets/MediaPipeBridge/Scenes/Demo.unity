@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2ca32fc99c44fd9a8c92404aacf0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeModules: []
 --- !u!114 &909758384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,7 +466,7 @@ MonoBehaviour:
   tape: {fileID: 4900000, guid: 025a5d543a19a4dcb978c15f534dd892, type: 3}
   episodeId: 0
   episodes: []
-  episodeDuration: 0.3
+  episodeDuration: 0.1
 --- !u!4 &1046783502
 Transform:
   m_ObjectHideFlags: 0
@@ -896,8 +897,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
+      propertyPath: settings
+      value: 
+      objectReference: {fileID: 11400000, guid: 1554cbf57df10f54797627d7f7f1b989, type: 2}
+    - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1214449427964364207, guid: c66b444dfdce14080a3e56d5affe3e72, type: 3}
       propertyPath: modules.Array.data[0]

@@ -9,7 +9,7 @@ namespace MediaPipe {
     public string[] episodes;
     public float episodeDuration = 0.01f;
     public static PlaybackManager Instance;
-    private void Start(){
+    private void Awake(){
 #if UNITY_EDITOR
       Instance = this;
       if(tape) {

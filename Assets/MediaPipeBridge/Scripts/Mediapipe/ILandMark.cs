@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface ILandMark{
-  public void OnLandmarkCollected(string serializedPoints);
+  public void OnLandmarkCollected(string serializedPoints, int i);
 }

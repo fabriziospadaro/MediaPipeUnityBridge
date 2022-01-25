@@ -114,15 +114,13 @@
 window.cameraListeners = [];
 
 window.addEventListener('load', function () {
-  const videoElement = document.getElementsByClassName('input_video')[0];
+  const videoElement = document.querySelector('.input_video');
 
   new Camera(videoElement, {
   onFrame: async () => {
     for(listener of cameraListeners)
       await listener.send({image: videoElement});
   },
-  width: window.screen.width,
-  height: window.screen.height
+  %DIMENSION%
   }).start();
-
 })

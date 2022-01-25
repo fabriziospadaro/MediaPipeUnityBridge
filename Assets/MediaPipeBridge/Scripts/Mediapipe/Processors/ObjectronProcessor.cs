@@ -6,8 +6,8 @@ namespace MediaPipe {
 
     public ObjectronProcessor() { }
 
-    public override void OnPointsDeserialized(Vector3[] points) {
-      data = new ObjectronData(points);
+    public override void OnPointsDeserialized(Vector3[] points,int i) {
+      Set(i, new ObjectronData(points));
     }
   }
 }

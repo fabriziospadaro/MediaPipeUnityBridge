@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace MediaPipe {
@@ -12,6 +11,7 @@ namespace MediaPipe {
     public float minDetectionConfidence;
     public float minTrackingConfidence;
   }
+  [System.Serializable]
   public struct HandsOptions {
     public const string NAME = "Hands";
     public bool enabled;
@@ -20,28 +20,41 @@ namespace MediaPipe {
     public float minDetectionConfidence;
     public float minTrackingConfidence;
   }
+  [System.Serializable]
   public struct GeneralSettings {
     public const string NAME = "General";
     public bool debug;
-    public enum SizingRule { Size, Ratio };
+    public enum SizingRule { CustomSize, Ratio, FullSize };
     public SizingRule sizingRule;
     public Vector2Int dimension;
   }
-  class Settings {
+  public class Settings {
+    public const string scriptableSettingsName = "scriptableSettings";
+
     public static string[] enabledModules {
       get {
         List<string> enabledModules = new List<string>();
-
-        string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{FaceMeshOptions.NAME}_Settings.json";
-        if(((FaceMeshOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(FaceMeshOptions))).enabled)
+        var data = getJson;
+        if(data.faceMeshOptions.enabled)
           enabledModules.Add(FaceMeshOptions.NAME);
-
-        settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{HandsOptions.NAME}_Settings.json";
-        if(((HandsOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(HandsOptions))).enabled)
+        if(data.handsOptions.enabled)
           enabledModules.Add(HandsOptions.NAME);
-
         return enabledModules.ToArray();
       }
+    }
+
+    public static ScriptableSettings getJson {
+      get {
+        return Resources.Load<ScriptableSettings>($"Settings/{scriptableSettingsName}");
+      }
+    }
+    public static string Obj2String(string name) {
+      switch(name) {
+        case FaceMeshOptions.NAME: return JsonUtility.ToJson(getJson.faceMeshOptions);
+        case HandsOptions.NAME: return JsonUtility.ToJson(getJson.handsOptions);
+        case GeneralSettings.NAME: return JsonUtility.ToJson(getJson.generalSettings);
+      }
+      return "";
     }
   }
 

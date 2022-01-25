@@ -9,7 +9,6 @@ namespace MediaPipe {
     public bool lookRotation = false;
     public Vector3 rotationOffset;
     public Vector3 rotationMultiplier;
-    FaceMeshData face;
     LandMarkPointsSmoother landMarkPointsSmoother;
 
     private void Start() {
@@ -17,8 +16,8 @@ namespace MediaPipe {
     }
 
     private void Update() {
-      face = (FaceMeshData)MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
-      if(face != null) {
+      FaceMeshData[] results = MediaPipeBridge.GetResults<FaceMeshData>(MediaPipeModule.Category.FaceMesh.ToString());
+      foreach(FaceMeshData face in results) {
         landMarkPointsSmoother.Step(new Vector3[] { face.points[(int)anchor] }, Time.deltaTime);
         transform.position = landMarkPointsSmoother.points[0] + offset;
         transform.localScale = face.uniformScale * Vector3.one;

@@ -7,7 +7,7 @@ using UnityEngine;
 public class HeadOccluder : MonoBehaviour{
   MeshFilter meshFilter;
   private Mesh mesh;
-  private FaceMeshData face;
+  private FaceMeshData[] results;
   private Transform volumeOccluder;
   [Range(0.1f,2)]
   public float volumeOccluderScale = 1.7f;
@@ -22,8 +22,8 @@ public class HeadOccluder : MonoBehaviour{
   }
 
   private void Update() {
-    face = (FaceMeshData)MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
-    if(face != null) {
+    results = MediaPipeBridge.GetResults<FaceMeshData>(MediaPipeModule.Category.FaceMesh.ToString());
+    foreach(FaceMeshData face in results) {
       mesh.vertices = face.points;
       volumeOccluder.position = face.bound.center - (face.forward * volumeOccluderDistance);
       Vector3 eulerRot = face.rotation.eulerAngles;

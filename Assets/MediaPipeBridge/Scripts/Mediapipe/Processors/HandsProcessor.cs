@@ -6,8 +6,8 @@ namespace MediaPipe {
 
     public HandsProcessor() { }
 
-    public override void OnPointsDeserialized(Vector3[] points) {
-      data = new HandsData(points);
+    public override void OnPointsDeserialized(Vector3[] points,int i) {
+      Set(i, new HandsData(points));
     }
   }
 }

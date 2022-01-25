@@ -12,17 +12,18 @@ namespace MediaPipe {
 
     private void OnRenderObject() {
       if(Application.isPlaying) {
-        PoseData pose = (PoseData)MediaPipeBridge.GetData(MediaPipeModule.Category.Pose.ToString());
-        landMarkPointsSmoother.Step(pose.points, Time.deltaTime);
+        PoseData[] results = MediaPipeBridge.GetResults<PoseData>(MediaPipeModule.Category.Pose.ToString());
+        foreach(PoseData pose in results) {
+          landMarkPointsSmoother.Step(pose.points, Time.deltaTime);
 
-        foreach(int[] connections in PoseData.Constants.CONNECTIONS)
-          for(int i = 0; i < connections.Length; i++)
-            if(i+1 < connections.Length)
-              Draw.Line(landMarkPointsSmoother.points[connections[i]], landMarkPointsSmoother.points[connections[i + 1]],Color.yellow);
+          foreach(int[] connections in PoseData.Constants.CONNECTIONS)
+            for(int i = 0; i < connections.Length; i++)
+              if(i + 1 < connections.Length)
+                Draw.Line(landMarkPointsSmoother.points[connections[i]], landMarkPointsSmoother.points[connections[i + 1]], Color.yellow);
 
-
-        DebugTorso(pose);
-        DebugHead(pose);
+          DebugTorso(pose);
+          DebugHead(pose);
+        }
       }
     }
 

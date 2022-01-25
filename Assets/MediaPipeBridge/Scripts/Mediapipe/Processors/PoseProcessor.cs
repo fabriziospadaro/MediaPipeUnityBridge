@@ -6,8 +6,8 @@ namespace MediaPipe {
 
     public PoseProcessor() { }
 
-    public override void OnPointsDeserialized(Vector3[] points) {
-      data = new PoseData(points);
+    public override void OnPointsDeserialized(Vector3[] points,int i) {
+      Set(i, new PoseData(points));
     }
   }
 }

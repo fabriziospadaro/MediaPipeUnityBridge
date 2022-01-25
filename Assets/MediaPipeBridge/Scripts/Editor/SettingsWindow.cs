@@ -8,7 +8,6 @@ public class SettingsWindow: EditorWindow {
   GeneralSettings generalSettings;
   bool faceFoldout = true;
   bool handsFoldout = true;
-
   [MenuItem("MediaPipeBridge/Settings")]
   public static void ShowWindow(){
     EditorWindow.GetWindow(typeof(SettingsWindow));
@@ -18,9 +17,10 @@ public class SettingsWindow: EditorWindow {
     LoadSettings();
   }
   void LoadSettings() {
-    LoadFaceMeshSetting();
-    LoadHandsOptions();
-    LoadGeneralSettings();
+    var settings = scriptableSettings;
+    faceMeshOptions = settings.faceMeshOptions;
+    handsOptions = settings.handsOptions;
+    generalSettings = settings.generalSettings;
   }
   void OnGUI(){
     GeneralSettingsInspector();
@@ -42,15 +42,17 @@ public class SettingsWindow: EditorWindow {
       generalSettings.dimension = EditorGUILayout.Vector2IntField("", generalSettings.dimension);
       generalSettings.dimension = new Vector2Int(Mathf.Clamp(generalSettings.dimension.x,0,20), Mathf.Clamp(generalSettings.dimension.y, 0, 20));
       break;
-      case GeneralSettings.SizingRule.Size:
+      case GeneralSettings.SizingRule.CustomSize:
       generalSettings.dimension = EditorGUILayout.Vector2IntField("", generalSettings.dimension);
       //clamp it to 4k
       generalSettings.dimension = new Vector2Int(Mathf.Clamp(generalSettings.dimension.x, 0, 3840), Mathf.Clamp(generalSettings.dimension.y, 0, 3840));
       break;
     }
     EditorGUI.indentLevel--;
-    if(EditorGUI.EndChangeCheck())
-      SaveSettings(GeneralSettings.NAME,generalSettings);
+    if(EditorGUI.EndChangeCheck()) {
+      scriptableSettings.generalSettings = generalSettings;
+      EditorUtility.SetDirty(scriptableSettings);
+    }
     EditorGUILayout.EndHorizontal();
   }
 
@@ -73,9 +75,11 @@ public class SettingsWindow: EditorWindow {
       faceMeshOptions.minDetectionConfidence = EditorGUILayout.Slider("Min Detection Confid", faceMeshOptions.minDetectionConfidence, 0, 1);
       faceMeshOptions.minTrackingConfidence = EditorGUILayout.Slider("Min Tracking Confid", faceMeshOptions.minTrackingConfidence, 0, 1);
       EditorGUILayout.EndToggleGroup();
-      
-      if(EditorGUI.EndChangeCheck())
-        SaveSettings(FaceMeshOptions.NAME, faceMeshOptions);
+
+      if(EditorGUI.EndChangeCheck()) {
+        scriptableSettings.faceMeshOptions = faceMeshOptions;
+        EditorUtility.SetDirty(scriptableSettings);
+      }
       EditorGUI.indentLevel--;
     }
     GUILayout.EndVertical();
@@ -93,36 +97,28 @@ public class SettingsWindow: EditorWindow {
       handsOptions.minTrackingConfidence = EditorGUILayout.Slider("Min Tracking Confid", handsOptions.minTrackingConfidence, 0, 1);
       EditorGUILayout.EndToggleGroup();
 
-      if(EditorGUI.EndChangeCheck())
-        SaveSettings(HandsOptions.NAME, handsOptions);
+      if(EditorGUI.EndChangeCheck()) {
+        scriptableSettings.handsOptions = handsOptions;
+        EditorUtility.SetDirty(scriptableSettings);
+      }
       EditorGUI.indentLevel--;
     }
     GUILayout.EndVertical();
   }
-  void SaveSettings(string key,object obj) {
-    string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{key}_Settings.json";
-    string settingsRaw = JsonUtility.ToJson(obj);
-    File.WriteAllText(settingsPath, settingsRaw);
-    AssetDatabase.Refresh();
-  }
-  void LoadFaceMeshSetting(){
-    string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{FaceMeshOptions.NAME}_Settings.json";
-    try {
-      faceMeshOptions = (FaceMeshOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(FaceMeshOptions));
-    }catch {}
-  }
-  void LoadHandsOptions(){
-    string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{HandsOptions.NAME}_Settings.json";
-    try {
-      handsOptions = (HandsOptions)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(HandsOptions));
-    }catch {}
-  }
-  void LoadGeneralSettings(){
-    string settingsPath = Application.dataPath + $"/MediaPipeBridge/Scripts/Settings/{GeneralSettings.NAME}_Settings.json";
-    try {
-      generalSettings = (GeneralSettings)JsonUtility.FromJson(File.ReadAllText(settingsPath), typeof(GeneralSettings));
+
+  ScriptableSettings scriptableSettings {
+    get {
+      ScriptableSettings scriptableObj = Resources.Load<ScriptableSettings>($"Settings/{Settings.scriptableSettingsName}");
+      if(!scriptableObj) {
+        ScriptableSettings asset = CreateInstance<ScriptableSettings>();
+        AssetDatabase.CreateAsset(asset, $"Assets/MediaPipeBridge/Resources/Settings/{Settings.scriptableSettingsName}.asset");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        return asset;
+      }
+      else
+        return scriptableObj;
     }
-    catch { }
   }
 }
  

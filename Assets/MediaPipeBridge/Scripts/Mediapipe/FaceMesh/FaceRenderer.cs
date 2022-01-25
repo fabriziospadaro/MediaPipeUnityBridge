@@ -7,7 +7,7 @@ using System.Linq;
 public class FaceRenderer : MonoBehaviour{
   MeshFilter meshFilter;
   public Mesh mesh;
-  public FaceMeshData face;
+  public FaceMeshData[] face;
 
   void Start(){
     meshFilter = GetComponent<MeshFilter>();
@@ -16,9 +16,11 @@ public class FaceRenderer : MonoBehaviour{
   }
 
   private void Update() {
-    face = (FaceMeshData)MediaPipeBridge.GetData(MediaPipeModule.Category.FaceMesh.ToString());
+    /*TODO: COMPLETLY BROKEN -> INSTANTIATE MULTIPLE FACEMESH IN THIS SCRIPT
+    face = (FaceMeshData)MediaPipeBridge.GetResults(MediaPipeModule.Category.FaceMesh.ToString());
     if(face != null)
       mesh.vertices = face.points;
+    */
   }
 }
 
