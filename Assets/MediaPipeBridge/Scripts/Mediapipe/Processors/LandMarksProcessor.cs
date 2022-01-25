@@ -10,6 +10,8 @@ namespace MediaPipe{
       throw new System.NotImplementedException("OnPointsDeserialized need to be overriden");
     }
 
+    public virtual void PostProcess() {}
+
     public void InitializeResults(int size) {
       results = new GenericLandMarksData[size];
     }

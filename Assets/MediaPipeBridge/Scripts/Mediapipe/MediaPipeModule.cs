@@ -16,7 +16,9 @@ namespace MediaPipe {
     private LandMarksProcessorWrapper processorWrapper;
 
     public Action<string, int> onLandmarkCollected;
+    public Action onPostProcess;
     public int maxTrackedObjects = 0;
+
     public void Initialize(Camera cam,ScriptableSettings settings){
       object landMarkProcessorInstance = Assembly.GetExecutingAssembly().CreateInstance("MediaPipe." + processorWrapper.name);
       landMarkProcessor = (LandMarksProcessor)landMarkProcessorInstance;
@@ -36,6 +38,7 @@ namespace MediaPipe {
       landMarksDeserializer.SetDeps(cam);
       landMarksDeserializer.SetVars(landMarkProcessor.OnPointsDeserialized, (int)category);
       onLandmarkCollected += landMarksDeserializer.OnLandmarkCollected;
+      onPostProcess = landMarkProcessor.PostProcess;
     }
     public GenericLandMarksData GetProcessorData(int i) {
       return landMarkProcessor.results[i];

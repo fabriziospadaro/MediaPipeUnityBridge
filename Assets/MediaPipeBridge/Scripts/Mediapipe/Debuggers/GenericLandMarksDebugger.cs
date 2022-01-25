@@ -26,7 +26,6 @@ namespace MediaPipe {
           foreach(GenericLandMarksData data in results) {
             if(data != null && (data.state == GenericLandMarksData.State.Stay || data.state == GenericLandMarksData.State.Enter)) {
               //landMarkPointsSmoother[i].Step(data.points, Time.deltaTime);
-
               Draw.BlendMode = ShapesBlendMode.Transparent;
               DrawWireCube(data.bound.center, data.rotation, data.bound.size / 2);
               Draw.BlendMode = ShapesBlendMode.Opaque;

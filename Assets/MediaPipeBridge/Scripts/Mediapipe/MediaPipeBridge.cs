@@ -50,6 +50,7 @@ public class MediaPipeBridge: MonoBehaviour {
         OnLandmarksLost(moduleName, i);
       }
     }
+    GetModule(moduleName).onPostProcess();
     /*
     string state = dataArgs[1];
     /*STATE MAPPING:

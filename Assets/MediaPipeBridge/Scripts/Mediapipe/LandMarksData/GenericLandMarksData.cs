@@ -11,26 +11,26 @@ namespace MediaPipe {
     public Quaternion rotation = Quaternion.identity;
     public enum State { Enter, Stay, Exit, Destroy }
     public State state;
-    public GenericLandMarksData(Vector3[] points){
+    public GenericLandMarksData(Vector3[] points) {
       this.points = points;
       CalculateBounds();
       CalculateRotation();
       CalculateScale();
     }
 
-    public void CalculateBounds(){
+    public void CalculateBounds() {
       bound = GeometryUtility.CalculateBounds(points, Matrix4x4.identity);
     }
 
-    public virtual void CalculateBasisVector(){
+    public virtual void CalculateBasisVector() {
       throw new System.NotImplementedException("CalculateBasisVector not implemented");
     }
 
-    public virtual void CalculateScale(){
+    public virtual void CalculateScale() {
       uniformScale = 1;
     }
 
-    public void CalculateRotation(){
+    public void CalculateRotation() {
       CalculateBasisVector();
       if(up != default && right != default && forward != default) {
         rotation = Quaternion.LookRotation(forward, up);
@@ -39,7 +39,7 @@ namespace MediaPipe {
     }
 
     public Vector3 scale { get { return new Vector3(uniformScale, uniformScale, uniformScale); } }
-    
+
     /*STATE MAPPING:
     DESTROY_STATE = "-1";
     EXIT_STATE = "0";
@@ -55,5 +55,7 @@ namespace MediaPipe {
       }
       return default;
     }
+
+    public bool visibleState { get { return state == State.Enter || state == State.Stay; } }
   }
 }
